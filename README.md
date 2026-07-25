@@ -380,3 +380,6 @@ pnpm lint        # ตรวจ ESLint
 - [Vue 3](https://vuejs.org/guide/)
 - [Vuetify](https://vuetifyjs.com/)
 - [Pinia](https://pinia.vuejs.org/)
+### Deployed ###
+Backend: https://finmate-backend.teerawit-ice.workers.dev
+Frontend: https://finmate-demo.pages.dev
