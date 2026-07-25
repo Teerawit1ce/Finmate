@@ -1,117 +1,105 @@
-# Fakduai - Premium Web App Starter Template
+# หารเท่า.ai (HarnTao) — AI Personal Finance Tracker
 
-<details>
-  <summary>Click to View Logs</summary>
-  
-  - 21 Dec 2024
-    - Init Readme
-</details>
+**Hackathon Demo MVP** — AI Agent ช่วยนักศึกษาบริหารจัดการเงินและติดตาม Subscription ผ่านระบบแชท
 
-<hr>
+## Tech Stack
 
-## Table of Contents
+| Technology | Usage |
+|-----------|-------|
+| React 19 | UI Library |
+| Vite 8 | Build Tool |
+| TypeScript | Language |
+| Tailwind CSS v4 | Styling |
+| shadcn/ui (style) | Design System |
+| Framer Motion | Animation |
+| Zustand | State Management |
+| Lucide React | Icons |
+| Recharts | Charts |
 
-- [Fakduai Standard Web](#fakduai-standard-web)
-  - [Table of Contents](#table-of-contents)
-  - [Overview](#overview)
-    - [Project setup](#project-setup)
-    - [Compiles and hot-reloads for development](#compiles-and-hot-reloads-for-development)
-    - [Compiles and minifies for production](#compiles-and-minifies-for-production)
-    - [Lints and fixes files](#lints-and-fixes-files)
-  - [Folder Structure](#folder-structure)
-    - [Document](#document)
-  - [Conventions](#conventions)
-    - [Naming](#naming)
-    - [Component](#component)
+## Design System
 
-## Overview
+- **Primary Color:** `#1431ff`
+- **Font:** Kanit (Google Fonts)
+- **Vibe:** Minimal, Modern, Mobile-first
+- **Layout:** Bottom Navigation (Mobile) / Sidebar (Desktop)
 
-A web frontend for Fakduai Standard Web project
-
-- **Recommended Editor: VS code**
-- Main Framework: Vue3 (Typescript)
-- UI Libs: Vuetify
-- Build Tools: Vite
-- Theme : Fakduai (Modern & Premium)
-- Test Tools: Vitest
-
-**Recommended VS Code Extensions**
-
-- Prettier
-- Vue Language Features (Volar)
-
-
-Use the right node version with `nvm`
+## วิธีรัน
 
 ```bash
-nvm use
-```
-
-### Project setup
-
-```
+cd frontend
 npm install
-```
-
-### Compiles and hot-reloads for development
-
-```
 npm run dev
+# → http://localhost:5173
 ```
 
-### Compiles and minifies for production
+## หน้าจอ
 
-```
-npm run build
-```
-### Lints and fixes files
+1. **Dashboard** — เงินคงเหลือ, การแจ้งเตือน, สัดส่วนค่าใช้จ่าย
+2. **Chat** — AI Agent (พิมพ์ "กินข้าว 60", "เงินจะหมดแล้ว", "sub", "ใช้เงินเปลือง")
+3. **Subscriptions** — จัดการ Subscription + Toggle เปิด/ปิด
 
-```
-npm run lint
-```
-
-
-## Folder Structure
-### Folder Structure
+## วิธี Build
 
 ```bash
-├── .vscode
-├── public
-└──  src
-   ├── assets
-   ├── components
-   │   └── global
-   ├── layouts
-   ├── plugins
-   ├── services
-   ├── pages
-   └── utils|
-   └── views
-
+npm run build    # → dist/
+npm run preview  # Preview build
 ```
 
+## Deploy (Cloudflare Pages)
 
-## Conventions
-
-This section will guide you about convention that are being used in this project
-
-### Naming
-
-We use `kebab-case` naming style for almost everything.  
-Except for a `Vue component` and `JS, TS Class file`
-
-- **Folder**: `helloWorld`
-- **JS File**: `helloWorld.js`
-- **TS File**: `hello-world.ts`
-
-### Component
-- Use `Single File Component (SFC)` concept
-- Always use `<script setup>.....</script>` instead of `defineComponent`
-- All components should scope its style `<style scoped>`
-- `<script setup>...</script>` should be top level of the component (template below)
-
+```bash
+npx wrangler pages deploy dist --project-name=finmate
 ```
-  <script setup>...</script>
-  <template>...</template>
-  <style>...</style>
-```
+
+---
+
+## 🎯 Hackathon Demo Script
+
+### 1. เปิดแอป → Dashboard (30 วินาที)
+
+> "นี่คือหน้า Dashboard ของ **หารเท่า.ai** — AI Agent ที่ช่วยนักศึกษาบริหารเงินโดยเฉพาะ"
+>
+> "เห็นตัวเลขยอดคงเหลือ 4,500 บาท และมีการแจ้งเตือน **⚠️ พรุ่งนี้มีตัดค่า Netflix 419 บาท**"
+>
+> "ด้านล่างเป็นกราฟสัดส่วนค่าใช้จ่ายที่แบ่งตามหมวด"
+
+### 2. ไปที่แชท → โมเมนต์สำคัญ (1 นาที)
+
+> "หัวใจของแอปคือ **Chat AI Agent** — เราโหลดบทสนทนาตัวอย่างไว้..."
+>
+> (ชี้ที่ข้อความ AI ที่ตอบกลับว่า Netflix ใกล้ตัด)
+>
+> "AI เช็กพบว่าผู้ใช้ไม่ได้เปิด Netflix มา 2 เดือนแล้ว เลยแนะนำให้ยกเลิก"
+>
+> (กดปุ่ม **"[ยกเลิก Netflix]"**)
+>
+> "กดปุ่มเดียว — ระบบยกเลิกทันที พร้อม Animation เด้ง และ **อัพเดทยอดเงินเหลือ 4,919 บาท** (คืน 419 บาท)"
+>
+> "AI ตอบกลับ: 'ยกเลิกเรียบร้อย! คุณมีเงินเหลือไปกินหมูกระทะเพิ่มอีก 419 บาท!'"
+
+### 3. ทดสอบพิมพ์รายจ่าย (30 วินาที)
+
+> "ลองพิมพ์ 'กินข้าว 60' → AI บันทึกและหักเงินทันที!"
+>
+> "พิมพ์ 'เงินจะหมดแล้ว' → เช็คสถานะ + Subscription ที่ใกล้ถึงกำหนด"
+>
+> "พิมพ์ 'ใช้เงินเปลือง' → วิเคราะห์ว่าหมวดไหนใช้เงินเยอะสุด พร้อมคำแนะนำ"
+
+### 4. หน้า Subscription (30 วินาที)
+
+> "หน้านี้รวมทุก Subscription ที่สมัครไว้ — Netflix 419฿, Spotify 139฿, ChatGPT 750฿"
+>
+> "มี Toggle สีฟ้า/แดงกดเปิด-ปิดได้ทันที สะท้อนไปที่ยอดรวมด้านบน"
+>
+> "รวม 5 รายการ 1,566 บาท/เดือน — คิดเป็น 13% ของรายรับ"
+
+### 5. ปิด (30 วินาที)
+
+> "สิ่งที่ทำให้ **หารเท่า.ai** ต่างจากแอปการเงินทั่วไป:
+> - **AI Agent** คุยภาษาคน — ไม่ต้องกดเมนู ใช้คำสั่งธรรมชาติ
+> - **Subscription Hunter** — หาแอปที่ไม่ได้ใช้ให้ยกเลิกโดยเฉพาะ
+> - **Mobile-first** — ออกแบบมาให้นักศึกษาใช้บนมือถือโดยเฉพาะ
+>
+> Tech Stack: React + TypeScript + Tailwind CSS + Framer Motion + Zustand
+>
+> **ขอบคุณครับ! 🙏**"
