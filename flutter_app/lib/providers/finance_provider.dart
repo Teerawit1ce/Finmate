@@ -157,7 +157,7 @@ class FinanceProvider extends ChangeNotifier {
 
     if (l.contains('สวัสดี') || l.contains('หวัดดี') || l.contains('hi') || l.contains('hello')) {
       return ChatResponse(
-        'สวัสดี! 👋\n\nฉัน **หารเท่า.ai** 🤖 ช่วย:\n• บันทึกรายจ่าย: พิมพ์ "กินข้าว 60"\n• เช็ค Subscription: พิมพ์ "sub"\n• เตือนก่อนตัด: พิมพ์ "เงินจะหมด"\n• วิเคราะห์: พิมพ์ "ใช้เงินเปลือง"',
+        'สวัสดี! 👋\n\nฉัน **Finmate** 🤖 ช่วย:\n• บันทึกรายจ่าย: พิมพ์ "กินข้าว 60"\n• เช็ค Subscription: พิมพ์ "sub"\n• เตือนก่อนตัด: พิมพ์ "เงินจะหมด"\n• วิเคราะห์: พิมพ์ "ใช้เงินเปลือง"',
         [
           ChatAction(label: '💰 "เงินจะหมด"', handler: 'check'),
           ChatAction(label: '📋 "sub"', handler: 'subs'),

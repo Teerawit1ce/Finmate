@@ -28,7 +28,7 @@ class ChatMessage {
 List<ChatMessage> demoMessages = [
   ChatMessage(
     id: 'm0', role: 'assistant',
-    text: '👋 สวัสดี! ฉันคือ **หารเท่า.ai** ผู้ช่วยบริหารเงินของคุณ\n\nพิมพ์ "สวัสดี" เพื่อเริ่ม หรือพิมพ์ "กินข้าว 60"',
+    text: '👋 สวัสดี! ฉันคือ **Finmate** ผู้ช่วยบริหารเงินของคุณ\n\nพิมพ์ "สวัสดี" เพื่อเริ่ม หรือพิมพ์ "กินข้าว 60"',
     timestamp: DateTime.now().subtract(const Duration(minutes: 1)),
   ),
   ChatMessage(

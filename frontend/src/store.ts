@@ -53,7 +53,7 @@ export const useStore = create<Store>((set, get) => ({
   ],
 
   messages: [
-    { id:'m0', role:'assistant', text:'👋 สวัสดี! ฉันคือ **หารเท่า.ai** ผู้ช่วยบริหารเงิน\n\nพิมพ์ "สวัสดี" เพื่อเริ่ม หรือพิมพ์ "กินข้าว 60"', timestamp:Date.now()-60000 },
+    { id:'m0', role:'assistant', text:'👋 สวัสดี! ฉันคือ **Finmate** ผู้ช่วยบริหารเงิน\n\nพิมพ์ "สวัสดี" เพื่อเริ่ม หรือพิมพ์ "กินข้าว 60"', timestamp:Date.now()-60000 },
     { id:'m1', role:'user', text:'เงินจะหมดแล้ว 😭', timestamp:Date.now()-30000 },
     { id:'m2', role:'assistant', text:'ใจเย็นๆ! 😊\n\nพรุ่งนี้ **Netflix 419 บาท**กำลังจะตัด แต่คุณไม่ได้ดูมา 2 เดือนแล้ว ยกเลิกเลยไหม?\n\nถ้ากดยกเลิกจะได้เงินคืน **419 บาท** ทันที! 🎉', actions:[{ label:'❌ ยกเลิก Netflix', handler:'cancel-netflix' }], timestamp:Date.now()-20000 },
   ],
@@ -115,7 +115,7 @@ export const useStore = create<Store>((set, get) => ({
     }
 
     if (l.includes('สวัสดี') || l.includes('หวัดดี') || l.includes('hi')) {
-      return { text:'สวัสดี! 👋\n\nฉัน **หารเท่า.ai** 🤖 ช่วย:\n• บันทึกรายจ่าย: พิมพ์ "กินข้าว 60"\n• เช็ค Subscription: พิมพ์ "sub"\n• เตือนก่อนตัด: พิมพ์ "เงินจะหมด"\n• วิเคราะห์: พิมพ์ "ใช้เงินเปลือง"', actions:[{ label:'💰 "เงินจะหมด"', handler:'check' },{ label:'📋 "sub"', handler:'subs' }] }
+      return { text:'สวัสดี! 👋\n\nฉัน **Finmate** 🤖 ช่วย:\n• บันทึกรายจ่าย: พิมพ์ "กินข้าว 60"\n• เช็ค Subscription: พิมพ์ "sub"\n• เตือนก่อนตัด: พิมพ์ "เงินจะหมด"\n• วิเคราะห์: พิมพ์ "ใช้เงินเปลือง"', actions:[{ label:'💰 "เงินจะหมด"', handler:'check' },{ label:'📋 "sub"', handler:'subs' }] }
     }
 
     return { text:'🙏 พิมพ์ "สวัสดี" เพื่อเริ่ม หรือ "กินข้าว 60" บันทึกรายจ่าย', actions:[{ label:'💬 สวัสดี', handler:'hello' }] }

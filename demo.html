@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
-<title>หารเท่า.ai — HarnTao Demo</title>
+<title>Finmate — Finmate Demo</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{--primary:#4F46E5;--primary-light:#EEF2FF;--success:#059669;--error:#DC2626;--warning:#D97706;--info:#3b82f6;--text:#1F2937;--text2:#6B7280;--text3:#9CA3AF;--bg:#F3F4F6;--surface:#fff;--border:#E5E7EB;--radius:12px;--shadow:0 1px 3px rgba(0,0,0,.08)}
@@ -94,7 +94,7 @@ h2{font-size:15px;font-weight:600;margin-bottom:2px}
       <div class="msg-ai">
         <div class="avatar">🤖</div>
         <div class="bubble">
-          👋 สวัสดี! ฉันคือ AI ผู้ช่วยบริหารเงิน <strong>หารเท่า.ai</strong><br><br>
+          👋 สวัสดี! ฉันคือ AI ผู้ช่วยบริหารเงิน <strong>Finmate</strong><br><br>
           พิมพ์ "สวัสดี" เพื่อเริ่มต้น พิมพ์รายจ่าย เช่น "กินข้าว 60" หรือพิมพ์ "เงินจะหมดแล้ว" เพื่อเช็คสถานะ
         </div>
       </div>
@@ -339,7 +339,7 @@ function processChat(input) {
   }
 
   if(l.includes('สวัสดี')||l.includes('หวัดดี')||l.includes('hi')){
-    return {msg:'สวัสดี! 👋\n\nฉันคือ **หารเท่า.ai** 🤖 ผู้ช่วยบริหารเงินของคุณ\n\n**สิ่งที่ฉันช่วยได้:**\n• 💰 บันทึกรายรับ-รายจ่าย — แค่พิมพ์บอก!\n• 📋 ตรวจสอบ Subscription — ดูอันที่ลืมยกเลิก\n• ⚠️ เตือนก่อนตัดเงิน\n• 📊 วิเคราะห์ใช้เงินเปลืองกับอะไร\n• 💡 แนะนำการออม',
+    return {msg:'สวัสดี! 👋\n\nฉันคือ **Finmate** 🤖 ผู้ช่วยบริหารเงินของคุณ\n\n**สิ่งที่ฉันช่วยได้:**\n• 💰 บันทึกรายรับ-รายจ่าย — แค่พิมพ์บอก!\n• 📋 ตรวจสอบ Subscription — ดูอันที่ลืมยกเลิก\n• ⚠️ เตือนก่อนตัดเงิน\n• 📊 วิเคราะห์ใช้เงินเปลืองกับอะไร\n• 💡 แนะนำการออม',
     actions:[
       {label:'💰 เช็คเงิน',handler:"quickChat('เงินจะหมดแล้ว')"},
       {label:'📋 Subscription',handler:"quickChat('sub')"},
@@ -524,7 +524,7 @@ function saveBudget(){
 //  INIT
 // ═══════════════════════════════════
 // Add welcome message
-addMsg('assistant','👋 สวัสดี! ฉันคือ AI ผู้ช่วยบริหารเงิน **หารเท่า.ai**\n\nพิมพ์ "สวัสดี" เพื่อเริ่มต้น หรือพิมพ์รายจ่าย เช่น "กินข้าว 60"\n\n✨ **เดโมนี้:** ลองพิมพ์ "เงินจะหมดแล้ว" เพื่อดูไฮไลท์!');
+addMsg('assistant','👋 สวัสดี! ฉันคือ AI ผู้ช่วยบริหารเงิน **Finmate**\n\nพิมพ์ "สวัสดี" เพื่อเริ่มต้น หรือพิมพ์รายจ่าย เช่น "กินข้าว 60"\n\n✨ **เดโมนี้:** ลองพิมพ์ "เงินจะหมดแล้ว" เพื่อดูไฮไลท์!');
 
 // Dashboard data loaded on first visit
 renderDashboard();

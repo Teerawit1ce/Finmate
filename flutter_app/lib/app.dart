@@ -26,7 +26,7 @@ class _FinanceAppState extends State<FinanceApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'หารเท่า.ai',
+      title: 'Finmate',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.darkTheme,
       home: Consumer<FinanceProvider>(
@@ -35,9 +35,9 @@ class _FinanceAppState extends State<FinanceApp> {
             return const Scaffold(
               body: Center(
                 child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-                  CircularProgressIndicator(color: AppTheme.primary),
+                  SizedBox(width: 24, height: 24, child: CircularProgressIndicator(strokeWidth: 2, valueColor: AlwaysStoppedAnimation<Color>(AppTheme.textTertiary))),
                   SizedBox(height: 16),
-                  Text('กำลังโหลด...', style: TextStyle(color: Colors.white54)),
+                  Text('กำลังโหลด...', style: TextStyle(color: AppTheme.textSecondary, fontSize: 13)),
                 ]),
               ),
             );
@@ -54,19 +54,19 @@ class _FinanceAppState extends State<FinanceApp> {
             ),
             bottomNavigationBar: Container(
               decoration: BoxDecoration(
-                border: Border(top: BorderSide(color: AppTheme.borderDark.withAlpha(80))),
+                border: Border(top: BorderSide(color: AppTheme.borderDark)),
               ),
               child: BottomNavigationBar(
                 currentIndex: p.currentIndex,
                 onTap: p.setTab,
                 backgroundColor: AppTheme.bgDark,
                 selectedItemColor: AppTheme.primary,
-                unselectedItemColor: Colors.white38,
+                unselectedItemColor: AppTheme.textTertiary,
                 type: BottomNavigationBarType.fixed,
                 selectedFontSize: 11,
                 unselectedFontSize: 11,
                 items: const [
-                  BottomNavigationBarItem(icon: Icon(Icons.dashboard_rounded), label: 'ดัชบอร์ด'),
+                  BottomNavigationBarItem(icon: Icon(Icons.dashboard_rounded), label: 'แดชบอร์ด'),
                   BottomNavigationBarItem(icon: Icon(Icons.chat_rounded), label: 'แชท'),
                   BottomNavigationBarItem(icon: Icon(Icons.repeat_rounded), label: 'Subscription'),
                 ],

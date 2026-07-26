@@ -24,17 +24,20 @@ function Dashboard() {
   tx.filter((t) => t.type === 'expense').forEach((t) => { cats[t.category] = (cats[t.category] || 0) + t.amount })
   const catSorted = Object.entries(cats).sort((a, b) => b[1] - a[1])
   const catTotal = Object.values(cats).reduce((a, v) => a + v, 0)
-  const COLORS = ['#1431ff', '#059669', '#d97706', '#dc2626', '#8b5cf6']
+  const COLORS = ['#2563EB', '#059669', '#d97706', '#dc2626', '#8b5cf6']
 
   return (
     <div className="p-4 pb-24 space-y-4">
       <div><h1 className="text-xl font-bold">สวัสดี 👋</h1><p className="text-xs text-gray-500">สรุปการเงินวันนี้</p></div>
 
-      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="bg-gradient-to-br from-primary to-blue-700 rounded-2xl p-5 text-white shadow-lg">
-        <div className="flex items-center gap-2 mb-1"><Wallet size={16} /><span className="text-sm opacity-80">ยอดคงเหลือ</span></div>
-        <div className="text-4xl font-bold mb-3">{$(balance)}</div>
-        <div className="flex gap-5"><span className="flex items-center gap-1 text-sm"><TrendingUp size={14} className="text-green-300" />{$(income)}</span><span className="flex items-center gap-1 text-sm"><TrendingDown size={14} className="text-red-300" />{$(expense)}</span></div>
-      </motion.div>
+      <div className="text-xs text-gray-500 mb-1">ยอดคงเหลือ</div>
+      <div className="flex items-baseline gap-1 mb-4">
+        <span className="text-3xl font-medium text-white">{$(balance)}</span>
+      </div>
+      <div className="grid grid-cols-2 gap-2 mb-4">
+        <div className="bg-gray-800/50 rounded-xl p-3 border border-gray-700/30"><div className="flex items-center gap-1.5 mb-2"><TrendingUp size={13} className="text-green-400/70" /><span className="text-[10px] text-gray-500">รายรับ</span></div><div className="text-sm font-medium text-white">{$(income)}</div></div>
+        <div className="bg-gray-800/50 rounded-xl p-3 border border-gray-700/30"><div className="flex items-center gap-1.5 mb-2"><TrendingDown size={13} className="text-red-400/70" /><span className="text-[10px] text-gray-500">รายจ่าย</span></div><div className="text-sm font-medium text-white">{$(expense)}</div></div>
+      </div>
 
       {netflix?.active && (
         <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} className="bg-orange-500/10 border border-orange-500/20 rounded-xl p-4 flex items-start gap-3">
@@ -43,13 +46,13 @@ function Dashboard() {
         </motion.div>
       )}
 
-      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="bg-gray-800/50 border border-gray-700/50 rounded-xl p-4">
+      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }} className="bg-gray-800/30 border border-gray-700/30 rounded-xl p-4">
         <h3 className="text-sm text-gray-400 mb-3">📊 สัดส่วนค่าใช้จ่าย</h3>
         <div className="flex gap-2 mb-3">{catSorted.map(([cat, amt], i) => { const p = catTotal > 0 ? Math.round((amt / catTotal) * 100) : 0; return <div key={cat} className="h-2 rounded-full transition-all" style={{ width: p + '%', backgroundColor: COLORS[i % COLORS.length] }} /> })}</div>
         {catSorted.map(([cat, amt], i) => (<div key={cat} className="flex items-center justify-between text-sm py-1"><div className="flex items-center gap-2"><div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: COLORS[i % COLORS.length] }} /><span>{cat}</span></div><div className="flex items-center gap-3"><span className="text-gray-500">{catTotal > 0 ? Math.round((amt / catTotal) * 100) : 0}%</span><span className="font-medium">{$(amt)}</span></div></div>))}
       </motion.div>
 
-      <div className="bg-gray-800/50 border border-gray-700/50 rounded-xl p-4">
+      <div className="bg-gray-800/30 border border-gray-700/30 rounded-xl p-4">
         <h3 className="text-sm text-gray-400 mb-3">💳 รายการล่าสุด</h3>
         {recent.map((t) => (<div key={t.id} className="flex items-center justify-between py-1.5"><div className="flex items-center gap-2.5"><div className={`w-2 h-2 rounded-full ${t.type === 'income' ? 'bg-green-400' : 'bg-red-400'}`} /><div><div className="text-sm">{t.description}</div><div className="text-[10px] text-gray-500">{t.date}</div></div></div><span className={`text-sm font-medium ${t.type === 'income' ? 'text-green-400' : 'text-red-400'}`}>{t.type === 'income' ? '+' : '-'}{$(t.amount)}</span></div>))}
       </div>
@@ -88,21 +91,23 @@ function Chat() {
 
   return (
     <div className="flex flex-col h-full">
-      <div className="p-4 border-b border-gray-800"><h2 className="font-semibold flex items-center gap-2"><Sparkles size={18} className="text-primary" />หารเท่า.ai</h2><p className="text-xs text-gray-500">AI Agent ผู้ช่วยบริหารเงิน</p></div>
+      <div className="px-4 py-3 border-b border-gray-800/50">
+        <h2 className="font-semibold text-sm flex items-center gap-2"><Sparkles size={16} className="text-primary" />Finmate</h2>
+        <p className="text-[10px] text-gray-500 uppercase tracking-wider mt-0.5">AI Agent</p></div>
 
       <div className="flex-1 overflow-y-auto no-scrollbar px-4 py-3 space-y-4">
         <AnimatePresence>
           {messages.map((msg) => (
             <motion.div key={msg.id} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
               <div className="max-w-[85%]">
-                {msg.role === 'assistant' && <div className="flex items-center gap-2 mb-1.5"><div className="w-7 h-7 rounded-full bg-gradient-to-br from-primary to-blue-600 flex items-center justify-center text-xs font-bold">H</div><span className="text-xs text-gray-500">หารเท่า.ai</span></div>}
-                <div className={`rounded-2xl px-4 py-3 text-sm leading-relaxed ${msg.role === 'user' ? 'bg-primary text-white rounded-tr-md' : 'bg-gray-800/80 border border-gray-700/50 rounded-tl-md'}`}>
+                {msg.role === 'assistant' && <div className="mb-1 ml-0.5"><span className="text-[10px] text-gray-500">Finmate</span></div>}
+                <div className={`rounded-2xl px-4 py-3 text-sm leading-relaxed ${msg.role === 'user' ? 'bg-primary/80 text-white rounded-tr-[4px]' : 'bg-gray-800/50 border border-gray-700/30 rounded-tl-[4px]'}`}>
                   <div dangerouslySetInnerHTML={{ __html: render(msg.text) }} />
                   {msg.actions && msg.actions.length > 0 && (
                     <div className="flex flex-wrap gap-2 mt-3">
                       {msg.actions.map((a, i) => (
                         <motion.button key={i} whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} onClick={() => handle(a.handler)}
-                          className="px-3 py-1.5 text-xs font-medium rounded-full border border-primary/50 text-primary bg-primary/5 hover:bg-primary/15"
+                          className="px-3 py-1.5 text-xs font-medium rounded-full border border-primary/30 text-primary bg-primary/5 hover:bg-primary/10"
                         >{a.label}</motion.button>
                       ))}
                     </div>
@@ -114,7 +119,7 @@ function Chat() {
         </AnimatePresence>
         {typing && (
           <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex justify-start">
-            <div className="bg-gray-800/80 border border-gray-700/50 rounded-2xl rounded-tl-md px-4 py-3"><div className="flex gap-1.5">{[0,1,2].map((i) => <motion.div key={i} animate={{ y: [0,-5,0] }} transition={{ repeat: Infinity, duration: 1.2, delay: i*0.2 }} className="w-2 h-2 rounded-full bg-primary/60" />)}</div></div>
+            <div className="bg-gray-800/50 border border-gray-700/30 rounded-2xl rounded-tl-[4px] px-4 py-3"><div className="flex gap-1.5">{[0,1,2].map((i) => <motion.div key={i} animate={{ y: [0,-5,0] }} transition={{ repeat: Infinity, duration: 1.2, delay: i*0.2 }} className="w-1.5 h-1.5 rounded-full bg-gray-500/60" />)}</div></div>
           </motion.div>
         )}
         <div ref={endRef} />
@@ -133,7 +138,7 @@ function Chat() {
           <input value={input} onChange={(e) => setInput(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && send(input)}
             placeholder="พิมพ์รายจ่ายของคุณ..." className="flex-1 bg-transparent text-sm text-white placeholder-gray-500 outline-none" />
           <motion.button whileTap={{ scale: 0.9 }} onClick={() => send(input)} disabled={!input.trim()}
-            className="w-9 h-9 rounded-xl bg-primary flex items-center justify-center disabled:opacity-30"><Send size={16} /></motion.button>
+            className="w-9 h-9 rounded-xl bg-primary/90 flex items-center justify-center disabled:opacity-30"><Send size={14} /></motion.button>
         </div>
       </div>
     </div>
@@ -145,11 +150,11 @@ function Subs() {
   const { subscriptions, toggleSub } = useStore()
   const active = subscriptions.filter((s) => s.active)
   const total = active.reduce((a, s) => a + s.amount, 0)
-  const colors = ['#1431ff', '#059669', '#d97706', '#dc2626', '#8b5cf6', '#ec4899']
+  const colors = ['#2563EB', '#059669', '#d97706', '#dc2626', '#8b5cf6', '#ec4899']
 
   return (
     <div className="p-4 pb-24">
-      <h2 className="text-lg font-semibold mb-1">📋 Subscription</h2>
+      <h2 className="text-sm font-medium text-gray-400 uppercase tracking-wider mb-3">Subscription</h2>
       <p className="text-xs text-gray-500 mb-4">จัดการแอปที่สมัครไว้</p>
 
       <div className="grid grid-cols-3 gap-3 mb-5">
@@ -208,7 +213,7 @@ export default function App() {
       <aside className="hidden md:flex flex-col w-64 bg-gray-900/50 border-r border-gray-800 p-4">
         <div className="flex items-center gap-2.5 mb-8 px-2">
           <div className="w-9 h-9 rounded-xl bg-primary flex items-center justify-center text-white font-bold text-sm">H</div>
-          <div><div className="font-semibold text-sm">หารเท่า.ai</div><div className="text-[10px] text-gray-500">HarnTao Finance</div></div>
+          <div><div className="font-semibold text-sm">Finmate</div><div className="text-[10px] text-gray-500">Finmate Finance</div></div>
         </div>
         <nav className="space-y-1">
           {TABS.map((t) => (
@@ -224,7 +229,7 @@ export default function App() {
 
       <div className="flex-1 flex flex-col overflow-hidden">
         <header className="md:hidden flex items-center justify-between px-4 py-3 border-b border-gray-800">
-          <div className="flex items-center gap-2"><div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center text-white font-bold text-xs">H</div><span className="font-semibold text-sm">หารเท่า.ai</span></div>
+          <div className="flex items-center gap-2"><div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center text-white font-bold text-xs">H</div><span className="font-semibold text-sm">Finmate</span></div>
           <button onClick={() => setMobileOpen(!mobileOpen)} className="p-1.5">{mobileOpen ? <X size={20} /> : <Menu size={20} />}</button>
         </header>
 

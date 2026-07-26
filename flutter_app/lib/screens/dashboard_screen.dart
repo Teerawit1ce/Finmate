@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:google_fonts/google_fonts.dart';
 import '../providers/finance_provider.dart';
 import '../theme/app_theme.dart';
 
@@ -14,124 +13,130 @@ class DashboardScreen extends StatelessWidget {
         final cats = p.expenseByCategory.entries.toList()..sort((a, b) => b.value.compareTo(a.value));
         final catTotal = cats.fold(0.0, (sum, e) => sum + e.value);
         final recent = p.recentTransactions;
-        final colors = [AppTheme.primary, AppTheme.success, AppTheme.warning, AppTheme.error, const Color(0xFF8B5CF6)];
 
         return SingleChildScrollView(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
           child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Text('สวัสดี 👋', style: Theme.of(context).textTheme.headlineMedium),
+            // Greeting — minimal
+            Text('ภาพรวม', style: Theme.of(context).textTheme.bodySmall?.copyWith(
+              fontSize: 11, color: AppTheme.textTertiary, letterSpacing: 0.8,
+            )),
             const SizedBox(height: 4),
-            Text('สรุปการเงินวันนี้', style: Theme.of(context).textTheme.bodySmall),
-            const SizedBox(height: 16),
+            Text('ยอดคงเหลือ', style: Theme.of(context).textTheme.headlineMedium?.copyWith(
+              fontSize: 14, fontWeight: FontWeight.w400, color: AppTheme.textSecondary,
+            )),
+            const SizedBox(height: 2),
+            Text(p.fmt(p.balance), style: TextStyle(
+              fontSize: 32, fontWeight: FontWeight.w500,
+              color: AppTheme.textPrimary, letterSpacing: -0.5,
+            )),
+            const SizedBox(height: 14),
 
-            // Balance Card
-            Container(
-              width: double.infinity,
-              padding: const EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                gradient: const LinearGradient(colors: [AppTheme.primary, Color(0xFF2563EB)]),
-                borderRadius: BorderRadius.circular(16),
-              ),
-              child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                Row(children: [
-                  Icon(Icons.account_balance_wallet_rounded, size: 16, color: Colors.white.withAlpha(200)),
-                  const SizedBox(width: 6),
-                  Text('ยอดคงเหลือ', style: TextStyle(color: Colors.white.withAlpha(200), fontSize: 13)),
-                ]),
-                const SizedBox(height: 8),
-                Text(p.fmt(p.balance), style: const TextStyle(fontSize: 34, fontWeight: FontWeight.w700, color: Colors.white)),
-                const SizedBox(height: 12),
-                Row(children: [
-                  _statChip(Icons.trending_up, p.fmt(p.monthlyIncome), Colors.green.shade300),
-                  const SizedBox(width: 16),
-                  _statChip(Icons.trending_down, p.fmt(p.monthlyExpense), Colors.red.shade300),
-                ]),
-              ]),
-            ),
-            const SizedBox(height: 12),
+            // Income / Expense Row — flat, no gradient
+            Row(children: [
+              _miniCard(Icons.trending_up, 'รายรับ', p.fmt(p.monthlyIncome), AppTheme.success),
+              const SizedBox(width: 8),
+              _miniCard(Icons.trending_down, 'รายจ่าย', p.fmt(p.monthlyExpense), AppTheme.error),
+            ]),
+            const SizedBox(height: 20),
 
             // Warning
             if (p.dueSoonSubs.isNotEmpty)
               Container(
                 width: double.infinity,
-                padding: const EdgeInsets.all(14),
+                padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
                 decoration: BoxDecoration(
-                  color: AppTheme.warning.withAlpha(25),
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: AppTheme.warning.withAlpha(50)),
+                  color: AppTheme.warning.withAlpha(15),
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(color: AppTheme.warning.withAlpha(40)),
                 ),
                 child: Row(children: [
-                  const Icon(Icons.warning_amber_rounded, color: AppTheme.warning, size: 22),
-                  const SizedBox(width: 12),
-                  Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                    Text('⚠️ Subscription กำลังจะตัด!', style: TextStyle(color: AppTheme.warning, fontWeight: FontWeight.w600, fontSize: 13)),
-                    const SizedBox(height: 2),
-                    Text('${p.dueSoonSubs.length} รายการ', style: const TextStyle(color: Colors.white70, fontSize: 12)),
-                  ])),
+                  Icon(Icons.warning_amber_rounded, color: AppTheme.warning.withAlpha(200), size: 18),
+                  const SizedBox(width: 10),
+                  Expanded(child: Text(
+                    '⚠️ ${p.dueSoonSubs.length} Subscription กำลังจะตัด',
+                    style: TextStyle(color: AppTheme.warning, fontSize: 13),
+                  )),
                 ]),
               ),
-
-            const SizedBox(height: 16),
+            if (p.dueSoonSubs.isNotEmpty) const SizedBox(height: 20),
 
             // Category Breakdown
-            _sectionHeader(context, '📊 สัดส่วนค่าใช้จ่าย'),
+            Text('สัดส่วนค่าใช้จ่าย', style: TextStyle(
+              fontSize: 12, fontWeight: FontWeight.w500, color: AppTheme.textSecondary,
+            )),
             const SizedBox(height: 10),
             Container(
               width: double.infinity,
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(14),
               decoration: BoxDecoration(
                 color: AppTheme.surfaceDark,
-                borderRadius: BorderRadius.circular(14),
-                border: Border.all(color: AppTheme.borderDark.withAlpha(80)),
+                borderRadius: BorderRadius.circular(10),
+                border: Border.all(color: AppTheme.borderDark, width: 0.5),
               ),
               child: Column(children: [
+                // Bar
                 Row(children: cats.take(4).toList().asMap().entries.map((e) {
                   final pct = catTotal > 0 ? (e.value.value / catTotal * 100) : 0.0;
-                  return Expanded(child: Container(height: 6, margin: const EdgeInsets.symmetric(horizontal: 2),
-                    decoration: BoxDecoration(
-                      color: colors[e.key % colors.length].withAlpha(120),
-                      borderRadius: BorderRadius.circular(3),
+                  return Expanded(
+                    child: Container(
+                      height: 4,
+                      margin: const EdgeInsets.symmetric(horizontal: 1),
+                      decoration: BoxDecoration(
+                        color: [AppTheme.primaryLight, AppTheme.success, AppTheme.warning, AppTheme.error][e.key % 4].withAlpha(150),
+                        borderRadius: BorderRadius.circular(2),
+                      ),
                     ),
-                  ));
+                  );
                 }).toList()),
                 const SizedBox(height: 12),
                 ...cats.take(4).map((e) {
                   final pct = catTotal > 0 ? (e.value / catTotal * 100) : 0.0;
                   return Padding(
-                    padding: const EdgeInsets.only(bottom: 6),
+                    padding: const EdgeInsets.only(bottom: 5),
                     child: Row(children: [
-                      Text(e.key, style: const TextStyle(fontSize: 13, color: Colors.white)),
+                      Text(e.key, style: TextStyle(fontSize: 12, color: AppTheme.textSecondary)),
                       const Spacer(),
-                      Text('${pct.toStringAsFixed(0)}%', style: const TextStyle(fontSize: 12, color: Colors.white38)),
-                      const SizedBox(width: 12),
-                      Text(p.fmt(e.value), style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: Colors.white)),
+                      Text('${pct.toStringAsFixed(0)}%', style: TextStyle(fontSize: 11, color: AppTheme.textTertiary)),
+                      const SizedBox(width: 10),
+                      Text(p.fmt(e.value), style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500, color: AppTheme.textPrimary)),
                     ]),
                   );
                 }),
               ]),
             ),
-
-            const SizedBox(height: 16),
+            const SizedBox(height: 20),
 
             // Recent Transactions
-            _sectionHeader(context, '💳 รายการล่าสุด'),
+            Text('รายการล่าสุด', style: TextStyle(
+              fontSize: 12, fontWeight: FontWeight.w500, color: AppTheme.textSecondary,
+            )),
             const SizedBox(height: 10),
             ...recent.map((t) => Container(
               padding: const EdgeInsets.symmetric(vertical: 10),
-              decoration: const BoxDecoration(border: Border(bottom: BorderSide(color: AppTheme.borderDark, width: 0.3))),
+              decoration: const BoxDecoration(
+                border: Border(bottom: BorderSide(color: AppTheme.borderDark, width: 0.3)),
+              ),
               child: Row(children: [
-                Container(width: 8, height: 8, decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: t.isIncome ? AppTheme.success : AppTheme.error,
-                )),
+                Container(
+                  width: 6, height: 6,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: t.isIncome ? AppTheme.success.withAlpha(180) : AppTheme.error.withAlpha(180),
+                  ),
+                ),
                 const SizedBox(width: 12),
                 Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                  Text(t.description, style: const TextStyle(fontSize: 14)),
-                  Text(t.date, style: const TextStyle(fontSize: 11, color: Colors.white38)),
+                  Text(t.description, style: TextStyle(fontSize: 13, color: AppTheme.textPrimary)),
+                  Text(t.date, style: TextStyle(fontSize: 10, color: AppTheme.textTertiary)),
                 ])),
-                Text('${t.isIncome ? '+' : '-'}${p.fmt(t.amount)}',
-                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600,
-                    color: t.isIncome ? AppTheme.success : AppTheme.error)),
+                Text(
+                  '${t.isIncome ? '+' : '-'}${p.fmt(t.amount)}',
+                  style: TextStyle(
+                    fontSize: 13, fontWeight: FontWeight.w500,
+                    color: t.isIncome ? AppTheme.success.withAlpha(200) : AppTheme.error.withAlpha(200),
+                  ),
+                ),
               ]),
             )),
           ]),
@@ -140,15 +145,27 @@ class DashboardScreen extends StatelessWidget {
     );
   }
 
-  Widget _statChip(IconData icon, String text, Color color) {
-    return Row(mainAxisSize: MainAxisSize.min, children: [
-      Icon(icon, size: 14, color: color),
-      const SizedBox(width: 4),
-      Text(text, style: TextStyle(fontSize: 13, color: Colors.white.withAlpha(200))),
-    ]);
-  }
-
-  Widget _sectionHeader(BuildContext context, String title) {
-    return Text(title, style: Theme.of(context).textTheme.bodySmall?.copyWith(fontSize: 13, color: Colors.white38));
+  Widget _miniCard(IconData icon, String label, String amount, Color color) {
+    return Expanded(
+      child: Container(
+        padding: const EdgeInsets.all(14),
+        decoration: BoxDecoration(
+          color: AppTheme.surfaceDark,
+          borderRadius: BorderRadius.circular(10),
+          border: Border.all(color: AppTheme.borderDark, width: 0.5),
+        ),
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          Row(children: [
+            Icon(icon, size: 14, color: color.withAlpha(180)),
+            const SizedBox(width: 6),
+            Text(label, style: TextStyle(fontSize: 11, color: AppTheme.textTertiary)),
+          ]),
+          const SizedBox(height: 6),
+          Text(amount, style: TextStyle(
+            fontSize: 17, fontWeight: FontWeight.w500, color: AppTheme.textPrimary,
+          )),
+        ]),
+      ),
+    );
   }
 }
