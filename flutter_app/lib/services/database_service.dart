@@ -1,7 +1,7 @@
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart' as p;
 import '../models/subscription.dart';
-import '../models/transaction.dart';
+import '../models/finance_tx.dart';
 
 class DatabaseService {
   static Database? _db;
@@ -58,11 +58,11 @@ class DatabaseService {
 
     final today = DateTime.now().toIso8601String().split('T')[0];
     final txs = [
-      Transaction(id:'a', type:'income', category:'เงินเดือน', amount:11000, description:'ค่าขนม', date:'${DateTime.now().year}-${DateTime.now().month.toString().padLeft(2,'0')}-20'),
-      Transaction(id:'b', type:'expense', category:'อาหาร', amount:180, description:'หมูกระทะ', date:today),
-      Transaction(id:'c', type:'expense', category:'เดินทาง', amount:85, description:'BTS', date:today),
-      Transaction(id:'d', type:'expense', category:'อาหาร', amount:60, description:'ข้าวผัด', date:today),
-      Transaction(id:'e', type:'expense', category:'ช้อปปิ้ง', amount:250, description:'เสื้อมือสอง', date:today),
+      FinanceTx(id:'a', type:'income', category:'เงินเดือน', amount:11000, description:'ค่าขนม', date:'${DateTime.now().year}-${DateTime.now().month.toString().padLeft(2,'0')}-20'),
+      FinanceTx(id:'b', type:'expense', category:'อาหาร', amount:180, description:'หมูกระทะ', date:today),
+      FinanceTx(id:'c', type:'expense', category:'เดินทาง', amount:85, description:'BTS', date:today),
+      FinanceTx(id:'d', type:'expense', category:'อาหาร', amount:60, description:'ข้าวผัด', date:today),
+      FinanceTx(id:'e', type:'expense', category:'ช้อปปิ้ง', amount:250, description:'เสื้อมือสอง', date:today),
     ];
     for (final t in txs) {
       await db.insert('transactions', t.toMap(), conflictAlgorithm: ConflictAlgorithm.replace);
@@ -91,13 +91,13 @@ class DatabaseService {
   }
 
   // Transactions
-  Future<List<Transaction>> getTransactions() async {
+  Future<List<FinanceTx>> getTransactions() async {
     final db = await database;
     final maps = await db.query('transactions', orderBy: 'date DESC');
-    return maps.map((m) => Transaction.fromMap(m)).toList();
+    return maps.map((m) => FinanceTx.fromMap(m)).toList();
   }
 
-  Future<void> addTransaction(Transaction tx) async {
+  Future<void> addFinanceTx(FinanceTx tx) async {
     final db = await database;
     await db.insert('transactions', tx.toMap(), conflictAlgorithm: ConflictAlgorithm.replace);
   }

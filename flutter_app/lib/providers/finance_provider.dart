@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:intl/intl.dart';
 import '../models/subscription.dart';
-import '../models/transaction.dart';
+import '../models/finance_tx.dart';
 import '../models/chat_message.dart';
 import '../services/database_service.dart';
 import '../services/notification_service.dart';
@@ -16,8 +16,8 @@ class FinanceProvider extends ChangeNotifier {
   List<Subscription> _subscriptions = [];
   List<Subscription> get subscriptions => _subscriptions;
 
-  List<Transaction> _transactions = [];
-  List<Transaction> get transactions => _transactions;
+  List<FinanceTx> _transactions = [];
+  List<FinanceTx> get transactions => _transactions;
 
   List<ChatMessage> _messages = [];
   List<ChatMessage> get messages => _messages;
@@ -50,13 +50,13 @@ class FinanceProvider extends ChangeNotifier {
   }
 
   Future<void> logExpense(double amount, String description, {String category = 'อื่นๆ'}) async {
-    final tx = Transaction(
+    final tx = FinanceTx(
       id: 'tx_${DateTime.now().millisecondsSinceEpoch}',
       type: 'expense', category: category,
       amount: amount, description: description,
       date: DateTime.now().toIso8601String().split('T')[0],
     );
-    await _db.addTransaction(tx);
+    await _db.addFinanceTx(tx);
     _transactions.insert(0, tx);
     _balance -= amount;
     notifyListeners();
@@ -189,7 +189,7 @@ class FinanceProvider extends ChangeNotifier {
     return cats;
   }
 
-  List<Transaction> get recentTransactions => _transactions.take(4).toList();
+  List<FinanceTx> get recentTransactions => _transactions.take(4).toList();
 }
 
 class ChatResponse {

@@ -1,0 +1,10 @@
+{
+  "name": "หารเท่า.ai",
+  "short_name": "HarnTao",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#0f172a",
+  "description": "AI Agent ช่วยนักศึกษาบริหารจัดการเงิน",
+  "icons": []
+}

@@ -1,4 +1,4 @@
-class Transaction {
+class FinanceTx {
   final String id;
   final String type;
   final String category;
@@ -6,7 +6,7 @@ class Transaction {
   final String description;
   final String date;
 
-  Transaction({
+  FinanceTx({
     required this.id,
     required this.type,
     required this.category,
@@ -20,7 +20,7 @@ class Transaction {
     'amount': amount, 'description': description, 'date': date,
   };
 
-  factory Transaction.fromMap(Map<String, dynamic> m) => Transaction(
+  factory FinanceTx.fromMap(Map<String, dynamic> m) => FinanceTx(
     id: m['id'] as String, type: m['type'] as String,
     category: m['category'] as String, amount: (m['amount'] as num).toDouble(),
     description: m['description'] as String, date: m['date'] as String,
